@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bhasa Setu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap">
+<style>
+:root{--p:#6d3fe6;--p2:#8b5cf6;--tint:#eee7ff;--tint2:#f3efff;--bg:#f7f6fc;--card:#fff;--ink:#1c1b22;--mute:#7b7885;--green:#2e7d32;--greenbg:#e3f4e4;--red:#ff4d4f;--line:#5b5966}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{font-family:'Space Grotesk','Noto Sans Devanagari',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;justify-content:center}
+.hi{font-family:'Noto Sans Devanagari','Space Grotesk',sans-serif}
+#app{width:100%;max-width:480px;min-height:100%;padding:env(safe-area-inset-top,0) 16px calc(24px + env(safe-area-inset-bottom,0));position:relative}
+button{font:inherit;border:0;background:none;color:inherit;cursor:pointer}
+svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 14px}
+header .brand{display:flex;align-items:center;gap:10px}
+header .brand svg{color:var(--green);width:30px;height:30px}
+.t1{font-weight:700;font-size:26px;color:var(--p);line-height:1}
+.t2{font-size:13px;color:var(--p2);margin-top:4px}
+.icons{display:flex;gap:14px;color:var(--p)}
+.icons button,.menu{padding:4px;display:flex}
+.banner{display:flex;align-items:center;gap:10px;background:var(--greenbg);color:var(--green);border-radius:16px;padding:12px 16px;font-size:14px;font-weight:500}
+.banner svg{width:18px;height:18px}
+.seg{display:flex;background:var(--tint);border-radius:40px;margin:18px 0;padding:0}
+.seg button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:22px 0;border-radius:40px;font-weight:700;color:var(--p);transition:background .2s,color .2s}
+.seg button.on{background:var(--p);color:#fff}
+.card{background:var(--card);border-radius:28px;padding:26px 28px;box-shadow:0 4px 14px rgba(60,40,120,.15)}
+.card h2{margin:0;font-size:21px;color:var(--p)}
+.sub{color:var(--mute);font-size:14px;margin-top:2px}
+.row{display:flex;justify-content:space-between;align-items:flex-start}
+.info{width:30px;height:30px;border-radius:50%;background:var(--p);color:#fff;font-weight:700;display:grid;place-items:center}
+.lbl{font-weight:700;margin:20px 0 10px}
+.langs{display:flex;gap:12px}
+.langs button{flex:1;padding:18px 0;border-radius:18px;background:var(--tint2);color:var(--mute);font-weight:500;border:2px solid transparent;display:flex;justify-content:center;align-items:center;gap:8px}
+.langs button.on{border-color:var(--p);background:var(--tint);color:var(--p);font-weight:700}
+.langs button svg{width:20px;height:20px;display:none;fill:var(--p);stroke:#fff}
+.langs button.on svg{display:block}
+.hint{color:var(--p2);font-size:13px;margin:14px 0 0;line-height:1.4}
+.box{position:relative;border:1px solid var(--line);border-radius:16px;margin-top:6px;padding:10px 14px 22px}
+.box textarea{width:100%;height:52px;border:0;outline:0;resize:none;font:inherit;font-size:18px;color:var(--ink);background:none;padding:0 34px 0 0}
+.box textarea::placeholder{color:var(--p)}
+.box .mic{position:absolute;right:12px;top:14px;color:var(--p)}
+.box .mic.rec{color:var(--red)}
+.box .cnt{position:absolute;right:14px;bottom:4px;font-size:12px;color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.chips button{background:var(--tint);color:var(--p);border-radius:20px;padding:8px 14px;font-weight:600;font-size:15px}
+.go{width:100%;padding:20px;border-radius:40px;background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;font-weight:700;font-size:19px;display:flex;justify-content:center;align-items:center;gap:10px}
+.go:disabled{background:#e6e6e6;color:#b9a8ee;cursor:not-allowed}
+.result{margin-top:18px;background:var(--card);border-radius:24px;padding:20px 24px;box-shadow:0 4px 14px rgba(60,40,120,.12);display:none}
+.result.show{display:block}
+.result small{color:var(--mute)}
+.result .out{font-size:26px;font-weight:700;margin-top:6px}
+.result .miss{color:var(--mute);font-size:15px;line-height:1.5}
+.result button{color:var(--p);margin-top:10px;display:flex;align-items:center;gap:6px;font-weight:700}
+.hidden{display:none!important}
+/* history */
+.hbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 20px;color:var(--p)}
+.hbar h1{margin:0;font-size:24px;color:var(--ink);text-align:center}
+.hbar .sub{text-align:center}
+.hbar .del{color:#e00}
+.item{background:var(--card);border-radius:26px;padding:22px 26px;margin-bottom:22px;box-shadow:0 3px 12px rgba(60,40,120,.12)}
+.badge{display:inline-block;background:var(--tint);color:var(--p);font-weight:700;font-size:13px;padding:5px 10px;border-radius:9px}
+.item .d{color:var(--mute);font-size:13px;margin-top:6px}
+.item .src{color:var(--mute);font-size:21px;margin-top:20px}
+.item .ar{color:var(--p2);font-size:14px}
+.item .tg{font-size:22px;font-weight:700}
+.item .act{display:flex;gap:26px;padding-right:4px}
+.item .act .sp{color:var(--p)}.item .act .tr{color:var(--red)}
+.empty{text-align:center;color:var(--mute);margin-top:80px;line-height:1.6}
+/* drawer + dialog */
+.scrim{position:fixed;inset:0;background:rgba(20,10,50,.45);display:none;z-index:5}
+.scrim.show{display:block}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;background:#fff;border-radius:28px 28px 0 0;padding:24px 28px calc(28px + env(safe-area-inset-bottom,0));z-index:6;display:none}
+.sheet.show{display:block}
+.sheet h3{margin:0 0 16px;color:var(--p)}
+.sheet .opt{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #eee}
+.sheet .opt:last-of-type{border:0}
+.sw{width:46px;height:26px;border-radius:13px;background:#d8d5e2;position:relative;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--p)}.sw.on::after{left:23px}
+.sheet a,.sheet p{color:var(--mute);font-size:14px;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);max-width:90%;background:#2b2540;color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;line-height:1.4;opacity:0;pointer-events:none;transition:.25s;z-index:9}.toast.show{opacity:1;transform:translate(-50%,0)}
+:focus-visible{outline:3px solid var(--p2);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+<symbol id="i-tr" viewBox="0 0 24 24"><path d="M4 5h8M8 3v2M5 9c1.5 3 4 5 7 6M11 5c-.5 4-3 8-7 10M13 21l4-9 4 9M14.5 18h5"/></symbol>
+<symbol id="i-hist" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></symbol>
+<symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+<symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5zM6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+<symbol id="i-arr" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+<symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+<symbol id="i-off" viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></symbol>
+<symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></symbol>
+</defs></svg>
+
+<!-- MAIN -->
+<main id="home">
+  <header>
+    <button class="menu" id="btnMenu" aria-label="Menu"><svg><use href="#i-menu"/></svg></button>
+    <div class="brand">
+      <svg><use href="#i-tr"/></svg>
+      <div><div class="t1">Bhasa Setu</div><div class="t2">Classroom Language Bridge</div></div>
+    </div>
+    <div class="icons">
+      <button id="btnHist" aria-label="History"><svg><use href="#i-hist"/></svg></button>
+      <button id="btnSet" aria-label="Settings"><svg><use href="#i-set"/></svg></button>
+    </div>
+  </header>
+
+  <div class="banner"><svg><use href="#i-off"/></svg><span id="bannerTxt">Offline dictionary available • 0 classroom phrases</span></div>
+
+  <div class="seg" role="tablist">
+    <button class="on" id="tabT" role="tab"><svg><use href="#i-cap"/></svg>Teacher Mode</button>
+    <button id="tabS" role="tab"><svg><use href="#i-cap"/></svg>Student Mode</button>
+  </div>
+
+  <section class="card">
+    <div class="row">
+      <div><h2 id="modeTitle">Teacher Mode</h2><div class="sub" id="modeSub">Speak or type in Hindi</div></div>
+      <div class="info" id="btnInfo" role="button" aria-label="About">i</div>
+    </div>
+    <div class="lbl" id="langLbl">Target Language</div>
+    <div class="langs" id="langs"></div>
+    <div class="lbl" id="inLbl" style="margin-top:20px">Hindi Input</div>
+    <div class="box">
+      <textarea id="inp" maxlength="500" placeholder="Type or speak in Hindi..."></textarea>
+      <button class="mic" id="mic" aria-label="Speak"><svg><use href="#i-mic"/></svg></button>
+      <span class="cnt" id="cnt">0/500</span>
+    </div>
+    <div class="chips hi" id="chips"></div>
+    <button class="go" id="go"><span id="goTxt">Translate</span><svg id="goArr"><use href="#i-arr"/></svg></button>
+  </section>
+
+  <section class="result" id="res" aria-live="polite">
+    <small id="resFrom"></small>
+    <div class="out hi" id="resOut"></div>
+    <button id="resSpeak"><svg><use href="#i-vol"/></svg>Listen</button>
+  </section>
+</main>
+
+<!-- HISTORY -->
+<main id="hist" class="hidden">
+  <div class="hbar">
+    <button id="hBack" aria-label="Back"><svg><use href="#i-back"/></svg></button>
+    <div><h1>History</h1><div class="sub" id="hCount"></div></div>
+    <button class="del" id="hClear" aria-label="Clear all"><svg><use href="#i-trash"/></svg></button>
+  </div>
+  <div id="hList"></div>
+</main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="setSheet">
+  <h3>Settings</h3>
+  <div class="opt"><span>Speak Hindi results aloud</span><button class="sw on" id="swSpeak" aria-label="Toggle"></button></div>
+  <div class="opt"><span>Save translations to history</span><button class="sw on" id="swSave" aria-label="Toggle"></button></div>
+</div>
+<div class="sheet" id="infoSheet">
+  <h3>About Bhasa Setu</h3>
+  <p>Teacher Mode turns Hindi into Santali, Mundari or Ho. Student Mode turns the student's reply back into Hindi. Everything runs offline from the built-in dictionary.</p>
+</div>
+<div class="sheet" id="menuSheet">
+  <h3>Menu</h3>
+  <div class="opt"><button id="mHist">Translation history</button></div>
+  <div class="opt"><button id="mSet">Settings</button></div>
+</div>
+
+<script>
+/* ---------- Offline dictionary: extend this array with your real data ----------
+   Each entry: hi = Hindi phrase, sa = Santali, mu = Mundari, ho = Ho          */
+const DICT = [
+  {hi:"नमस्ते", sa:"Johar", mu:"Johar", ho:"Johar"}
+  // {hi:"बैठ जाओ", sa:"...", mu:"...", ho:"..."},
+];
+const LANGS = [{k:"sa",n:"Santali"},{k:"mu",n:"Mundari"},{k:"ho",n:"Ho"}];
+const QUICK = ["नमस्ते","बैठ जाओ","ध्यान से सुनो","दोहराओ"];
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let mode = "teacher", lang = "sa";
+let settings = store.get("bs_settings",{speak:true,save:true});
+let history = store.get("bs_history",[]);
+let lastHindi = "";
+
+const norm = s => s.trim().replace(/\s+/g," ").toLowerCase();
+const langName = k => LANGS.find(l=>l.k===k).n;
+
+function renderLangs(){
+  $("langs").innerHTML = LANGS.map(l =>
+    `<button class="${l.k===lang?'on':''}" data-k="${l.k}"><svg><use href="#i-ok"/></svg>${l.n}</button>`).join("");
+  $("langs").querySelectorAll("button").forEach(b=>b.onclick=()=>{lang=b.dataset.k;renderLangs();updateUI()});
+}
+function renderChips(){
+  $("chips").innerHTML = QUICK.map(q=>`<button>${q}</button>`).join("");
+  $("chips").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    if(mode==="teacher"){$("inp").value=b.textContent;updateUI();translate()}
+  });
+}
+function setMode(m){
+  mode=m;
+  $("tabT").classList.toggle("on",m==="teacher");
+  $("tabS").classList.toggle("on",m==="student");
+  $("res").classList.remove("show");
+  $("inp").value="";
+  $("chips").classList.toggle("hidden",m!=="teacher");
+  $("modeTitle").textContent = m==="teacher"?"Teacher Mode":"Student Mode";
+  $("modeSub").textContent = m==="teacher"?"Speak or type in Hindi":"Communicate back in your language";
+  $("langLbl").textContent = m==="teacher"?"Target Language":"Your Language";
+  updateUI();
+}
+function updateUI(){
+  const n=$("inp").value.length;
+  $("cnt").textContent=n+"/500";
+  $("cnt").classList.toggle("hidden",mode!=="teacher");
+  $("inLbl").classList.toggle("hidden",mode!=="teacher");
+  $("inp").placeholder = mode==="teacher"?"Type or speak in Hindi...":langName(lang)+" Input";
+  $("goTxt").textContent = mode==="teacher"?"Translate":"Translate to Hindi";
+  $("goArr").classList.toggle("hidden",mode!=="teacher");
+  $("go").disabled = !$("inp").value.trim();
+  $("bannerTxt").textContent = "Offline dictionary available • "+DICT.length+" classroom phrases";
+}
+function translate(){
+  const q=$("inp").value; if(!q.trim())return;
+  let out=null, from, to;
+  if(mode==="teacher"){
+    const e=DICT.find(d=>norm(d.hi)===norm(q)); out=e?e[lang]:null; from="Hindi"; to=langName(lang);
+  }else{
+    const e=DICT.find(d=>norm(d[lang])===norm(q)); out=e?e.hi:null; from=langName(lang); to="Hindi";
+  }
+  $("res").classList.add("show");
+  $("resFrom").textContent=from+" → "+to;
+  const o=$("resOut");
+  if(out){
+    o.className="out"+(mode==="student"?" hi":""); o.textContent=out;
+    $("resSpeak").classList.toggle("hidden",mode!=="student");
+    if(mode==="student"){lastHindi=out; if(settings.speak)speak(out)}
+    if(settings.save){
+      history.unshift({from,to,src:q.trim(),out,t:Date.now()});
+      history=history.slice(0,100); store.set("bs_history",history);
+    }
+  }else{
+    o.className="miss"; o.textContent="Not in the offline dictionary yet. Add this phrase to DICT in the code.";
+    $("resSpeak").classList.add("hidden");
+  }
+}
+/* ---------- speech ---------- */
+function speak(t){
+  try{
+    if(!window.speechSynthesis)return;
+    const u=new SpeechSynthesisUtterance(t); u.lang="hi-IN";
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
+let rec=null, wantOn=false, base="", gotAny=false;
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),5000)}
+function setRec(on){$("mic").classList.toggle("rec",on)}
+function putText(t){$("inp").value=[base,t].filter(Boolean).join(" ").slice(0,500);$("inp").scrollTop=$("inp").scrollHeight;updateUI()}
+function stopMic(){
+  wantOn=false; setRec(false);
+  if(window.Android&&Android.stopListening){try{Android.stopListening()}catch(e){}}
+  if(rec){try{rec.stop()}catch(e){}}
+}
+/* Native bridge: the Kotlin app calls window.onNativeSpeech(text, isFinal) */
+window.onNativeSpeech=(t,fin)=>{putText(t);if(fin){base=$("inp").value;stopMic()}};
+window.onNativeSpeechError=m=>{stopMic();toast(m||"Voice input failed. Please type instead.")};
+function startRec(){
+  gotAny=false;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  rec=new SR(); rec.lang="hi-IN"; rec.interimResults=true; rec.continuous=false; rec.maxAlternatives=1;
+  rec.onaudiostart=()=>toast("Listening... speak now");
+  rec.onspeechstart=()=>toast("Hearing you...");
+  rec.onresult=e=>{
+    let t=""; for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;
+    gotAny=true; putText(t);
+    if(e.results[e.results.length-1].isFinal){base=$("inp").value;wantOn=false}
+  };
+  rec.onerror=e=>{
+    const er=e.error; if(er==="aborted")return;
+    wantOn=false; setRec(false);
+    if(er==="no-speech"){toast("Did not hear anything. Speak closer to the mic and tap again.");return}
+    const m={"not-allowed":"Mic blocked. Allow microphone for this page (needs https, or the app must grant RECORD_AUDIO).",
+      "service-not-allowed":"Speech service is off. Enable Google voice typing on this phone.",
+      "network":"Speech recognition needs internet in the browser. Type instead when offline.",
+      "language-not-supported":"Hindi voice input is not installed on this phone."};
+    toast(m[er]||"Voice input error: "+er);
+  };
+  rec.onend=()=>{rec=null; if(wantOn&&gotAny)setTimeout(()=>{if(wantOn)startRec()},150); else {wantOn=false;setRec(false)}};
+  try{rec.start()}catch(err){rec=null;wantOn=false;setRec(false);toast("Could not start the mic. Tap again.")}
+}
+$("mic").onclick=()=>{
+  if(wantOn){stopMic();return}
+  base=$("inp").value.trim(); wantOn=true; setRec(true);
+  if(window.Android&&Android.startListening){ try{Android.startListening("hi-IN")}catch(e){onNativeSpeechError()} return }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){wantOn=false;setRec(false);toast("This browser or WebView has no speech recognition. Open in Chrome, or use the app's native mic bridge.");return}
+  if(!window.isSecureContext&&location.protocol!=="file:"){toast("Mic needs https. Open this page over https or localhost.")}
+  startRec();
+};
+/* ---------- history ---------- */
+const fmt=t=>{
+  const d=new Date(t),m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"][d.getMonth()];
+  let h=d.getHours(),ap=h>=12?"pm":"am"; h=h%12||12;
+  return d.getDate()+" "+m+", "+String(h).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+" "+ap;
+};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function renderHist(){
+  $("hCount").textContent=history.length+(history.length===1?" translation saved":" translations saved");
+  $("hClear").classList.toggle("hidden",!history.length);
+  $("hList").innerHTML = history.length ? history.map((h,i)=>`
+    <div class="item">
+      <div class="row">
+        <div><span class="badge">${h.from} → ${h.to}</span><div class="d">${fmt(h.t)}</div></div>
+        <div class="act">
+          <button class="sp" data-s="${i}" aria-label="Speak"><svg><use href="#i-vol"/></svg></button>
+          <button class="tr" data-d="${i}" aria-label="Delete"><svg><use href="#i-trash"/></svg></button>
+        </div>
+      </div>
+      <div class="src">${esc(h.src)}</div><div class="ar">→</div>
+      <div class="tg hi">${esc(h.out)}</div>
+    </div>`).join("") : `<div class="empty">No translations yet.<br>Translate a phrase and it will appear here.</div>`;
+  $("hList").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>speak(history[b.dataset.s].out));
+  $("hList").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{history.splice(b.dataset.d,1);store.set("bs_history",history);renderHist()});
+}
+function show(view){
+  $("home").classList.toggle("hidden",view!=="home");
+  $("hist").classList.toggle("hidden",view!=="hist");
+  if(view==="hist")renderHist();
+  closeSheets(); scrollTo(0,0);
+}
+/* ---------- sheets ---------- */
+function openSheet(id){closeSheets();$("scrim").classList.add("show");$(id).classList.add("show")}
+function closeSheets(){$("scrim").classList.remove("show");document.querySelectorAll(".sheet").forEach(s=>s.classList.remove("show"))}
+function paintSw(){$("swSpeak").classList.toggle("on",settings.speak);$("swSave").classList.toggle("on",settings.save)}
+$("swSpeak").onclick=()=>{settings.speak=!settings.speak;store.set("bs_settings",settings);paintSw()};
+$("swSave").onclick=()=>{settings.save=!settings.save;store.set("bs_settings",settings);paintSw()};
+
+/* ---------- wiring ---------- */
+$("tabT").onclick=()=>setMode("teacher");
+$("tabS").onclick=()=>setMode("student");
+$("inp").oninput=updateUI;
+$("go").onclick=translate;
+$("resSpeak").onclick=()=>speak(lastHindi);
+$("btnHist").onclick=()=>show("hist");
+$("hBack").onclick=()=>show("home");
+$("hClear").onclick=()=>{if(confirm("Delete all saved translations?")){history=[];store.set("bs_history",history);renderHist()}};
+$("btnSet").onclick=()=>openSheet("setSheet");
+$("btnInfo").onclick=()=>openSheet("infoSheet");
+$("btnMenu").onclick=()=>openSheet("menuSheet");
+$("mHist").onclick=()=>show("hist");
+$("mSet").onclick=()=>openSheet("setSheet");
+$("scrim").onclick=closeSheets;
+
+renderLangs(); renderChips(); paintSw(); setMode("teacher");
+</script>
+</body>
+</html>
